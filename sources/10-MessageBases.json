@@ -1,0 +1,22 @@
+{
+  "roster": {
+    "KMKnKy7DmBhAwp7CuGXDsz": {
+      "located": {
+        "rel": "OsKSbXXCr8KZRcK2woXChc"        
+      },
+      "type": "MessageBase0"
+    },
+    "fcK3b1ACw5FKw5fCn8OffX": {
+      "located": {
+        "rel": "GcOuGcO_FVVLA8KPw6XDpC"
+      },
+      "type": "MessageBase0"
+    }
+  },
+  "stat": {
+    "skipped": 0,
+    "packedRoot": 2,
+    "packedContained": 0,
+    "packedTotal": 2
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "Yehat Pre Beta",
+  "short_name": "Yehat",
+  "theme_color": "#50177b",
+  "background_color": "#333333",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "Scope": "/",
+  "start_url": "/yehat",
+  "splash_pages": null
+}
