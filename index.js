@@ -8,7 +8,9 @@ const serverID = "W3rCkHzCtcKQRU_CkBnCjc";
 /* "475316bd-47f9-477b-b2ff-b803b7cf6885" at box !! ToDo!! */
 const epochStart = 18761;
 
-const  logging = { root: false, compo: false };
+const  logging = { 
+  root: false, compo: false, keypress: false 
+};
 
 const core = {
   // config: {
@@ -141,6 +143,12 @@ const screen = blessed.screen({
   dockBorders: true,
   ignoreDockContrast: true
 });
+
+// screen.program.disableMouse();
+
+// screen.on("mouse", (a, b, c) => {
+//   core.log("Mouse event", a, b, c);
+// });
 
 core.screen = screen;
 
@@ -317,6 +325,15 @@ function stringify(value) {
       return;
     }
 
+    if (a.full === 'C-k') {
+      logging.keypress = !logging.keypress;
+      core.log(`Logging keypress ${logging.keypress ? 'Enabled' : 'Disabled'}`);
+    }
+
+    if (a.full === 'f1') {
+      help();
+    }
+
     if (a.full === 'up' && ecs.root.cmdLine) {
       ecs.root.cmdLine.cmdLine1.up();      
       replInput.setValue(ecs.root.cmdLine.cmdLine1.command);
@@ -346,7 +363,9 @@ function stringify(value) {
       return;
     }
 
-    console.log("keypress", key, a);
+    if (logging.keypress) {
+      core.log("replInput.keypress", key, a);
+    }
 
     process.nextTick(() => {
       if (ecs.root.cmdLine) {
@@ -598,15 +617,19 @@ function stringify(value) {
     return screen.destroy();
   });
 
+  screen.key('f1', function() {    
+    help();
+  });
+
   screen.program.key('S-tab', function() {
     screen.focusNext();
     screen.render();
   });
 
-  
-
-
-  
+  screen.key('C-k', function() {
+    logging.keypress = !logging.keypress;
+    core.log(`Logging keypress ${logging.keypress ? 'Enabled' : 'Disabled'}`);
+  });
 
   // const _log = console.log;
   // const _err = console.error;
@@ -845,4 +868,11 @@ global.ecs = ecs;
   };  
 })();
 
-// });
+global.help = () => {
+  core.log("[ Yehat Back 4 ] -- [ Help System ]");
+  core.log("  [ H ] - [ HotKeys ]");
+  core.log("    [F1]                Help System");
+  core.log("    [Control] + [K]     Enable/disable keypress logging");
+  core.log("    [Control] + [Q]     Shutdown the Server");
+  core.log("    [Escape]            Exit REPL mode");
+};
