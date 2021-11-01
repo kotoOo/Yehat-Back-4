@@ -69,7 +69,7 @@ global.pure = {
   jsTypeToString: (v) => {
     if (Array.isArray(v)) {
       if (!v.length) return `[Empty Array]`;
-      return `[Array ${v.map(x => jsTypeToString(x)).join(" ")}]-[Size ${v.length}]`;
+      return `[Array ${v.map(x => pure.jsTypeToString(x)).join(" ")}]-[Size ${v.length}]`;
     } else if (typeof v === "object") {
       if (!Object.keys(v).length) {
         if (v.constructor && v.constructor.name) {

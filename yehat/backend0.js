@@ -3,52 +3,52 @@ const { ecs } = require("./ecs.cjs");
 const log0RootID = 'log0';
 const user0Root = 'users';
 
-const logging = {
-  saveFile: 0
-};
+// const logging = {
+//   saveFile: 0
+// };
 
-ecs.define("saveFile", {
-  save: (item) => async() => {
-    const fs = require("fs/promises");
-    const a = { id: item.id, type: item.type };
-    for (let key in item.saveFile) {
-      let v = item.saveFile[key];
+// ecs.define("saveFile", {
+//   save: (item) => async() => {
+//     const fs = require("fs/promises");
+//     const a = { id: item.id, type: item.type };
+//     for (let key in item.saveFile) {
+//       let v = item.saveFile[key];
 
-      if (key == "forceUpgrade") continue;
+//       if (key == "forceUpgrade") continue;
 
-      if (Array.isArray(v)) {
-        a[key] = {};
-        v.forEach(name => {
-          if (item[key]) a[key][name] = item[key][name]
-        });
-      } else if (v === true) {
-        a[key] = item[key];
-      }
-    }
+//       if (Array.isArray(v)) {
+//         a[key] = {};
+//         v.forEach(name => {
+//           if (item[key]) a[key][name] = item[key][name]
+//         });
+//       } else if (v === true) {
+//         a[key] = item[key];
+//       }
+//     }
 
-    let location = null;
-    // console.log(`Saving [${item.meta ? item.meta.name : item.type}] ${item.id}...`, item.located);
-    if (item.located && item.located.rel) {
-      await fs.mkdir(`./file-db/${item.located.rel}`).catch(e => {
-        if (e.code != 'EEXIST') {
-          core.log("[ECS]saveFile.save mkdir error", e);
-        } else {
-          return fs.chmod(`./file-db/${item.located.rel}`, 0o755);
-        }
-      });      
+//     let location = null;
+//     // console.log(`Saving [${item.meta ? item.meta.name : item.type}] ${item.id}...`, item.located);
+//     if (item.located && item.located.rel) {
+//       await fs.mkdir(`./file-db/${item.located.rel}`).catch(e => {
+//         if (e.code != 'EEXIST') {
+//           core.log("[ECS]saveFile.save mkdir error", e);
+//         } else {
+//           return fs.chmod(`./file-db/${item.located.rel}`, 0o755);
+//         }
+//       });      
 
-      location = `./file-db/${item.located.rel}/${item.id}.json`;
-    } else {
-      location = `./file-db/${item.id}.json`;
-    }
+//       location = `./file-db/${item.located.rel}/${item.id}.json`;
+//     } else {
+//       location = `./file-db/${item.id}.json`;
+//     }
 
-    return fs.writeFile(location, JSON.stringify(a)).then(() => {      
-      if (logging.saveFile) core.log(`[ECS]Saved File Instance [${item.meta ? item.meta.name : item.type}] #${item.id}.`);
-      // core.log(JSON.stringify(a, null, 2));
-      if (!item.type) core.log("Warning! No type.");
-    });
-  }
-}, { details: "JSON files-based persistence." });
+//     return fs.writeFile(location, JSON.stringify(a)).then(() => {      
+//       if (logging.saveFile) core.log(`[ECS]Saved File Instance [${item.meta ? item.meta.name : item.type}] #${item.id}.`);
+//       // core.log(JSON.stringify(a, null, 2));
+//       if (!item.type) core.log("Warning! No type.");
+//     });
+//   }
+// }, { details: "JSON files-based persistence." });
 
 ecs.define("file0", {
   filename: "",
@@ -73,11 +73,6 @@ ecs.define("log0", {
   sessionID: null,
   ip: null
 });
-
-ecs.declareType("Cargo0", [
-  ecs.compo.meta({ type: "Cargo0", name: "Cargo" }),
-  ecs.compo.saveFile({}),
-], { details: "A Directory of Entities" });
 
 ecs.declareType("Cargo1", [
   ecs.compo.meta({ type: "Cargo1", name: "Cargo" }),
@@ -125,8 +120,9 @@ ecs.declareType("User0", [
 
 ecs.define("password0", {
   password: null,
-  valid: true
-}, { details: "A password" });
+  valid: true,
+  on: null
+}, { details: "A password. on - deviceID where password was issued." });
 
 ecs.declareType("Password0", [
   ecs.compo.meta({ name: "Linking Password", type: "Password0" }),

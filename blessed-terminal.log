@@ -1,0 +1,46 @@
+LOG: "\u001b]0;koto@kotosurf: ~\u0007\u001b[01;32mkoto@kotosurf\u001b[00m:\u001b[01;34m~\u001b[00m$ "
+-
+LOG: "h"
+-
+LOG: "e"
+-
+LOG: "l"
+-
+LOG: "p"
+-
+LOG: "\r\nGNU bash, version 4.4.19(1)-release (x86_64-pc-linux-gnu)\r\nThese shell commands are defined internally.  Type `help' to see this list.\r\nType `help name' to find out more about the function `name'.\r\nUse `info bash' to find out more about the shell in general.\r\nUse `man -k' or `info' to find out more about commands not in this list.\r\n\r\nA star (*) next to a name means that the command is disabled.\r\n\r\n job_spec [&]             history [-c] [-d offs>\r\n (( expression ))         if COMMANDS; then COM>\r\n . filename [arguments>   jobs [-lnprs] [jobspe>\r\n :                        kill [-s sigspec | -n>\r\n [ arg... ]               let arg [arg ...]\r\n [[ expression ]]         local [option] name[=>\r\n alias [-p] [name[=valu>  logout [n]\r\n bg [job_spec ...]        mapfile [-d delim] [->\r\n bind [-lpsvPSVX] [-m k>  popd [-n] [+N | -N]\r\n break [n]                printf [-v var] forma>\r\n builtin [shell-builtin>  pushd [-n] [+N | -N |>\r\n caller [expr]            pwd [-LP]\r\n case WORD in [PATTERN >  read [-ers] [-a array>\r\n cd [-L|[-P [-e]] [-@]]>  readarray [-n count] >\r\n command [-pVv] command>  readonly [-aAf] [name>\r\n compgen [-abcdefgjksuv>  return [n]\r\n complete [-abcdefgjksu>  select NAME [in WORDS>\r\n compopt [-o|+o option]>  set [-abefhkmnptuvxBC>\r\n continue [n]             shift [n]\r\n coproc [NAME] command >  shopt [-pqsu] [-o] [o>\r\n declare [-aAfFgilnrtux>  source filename [argu>\r\n dirs [-clpv] [+N] [-N>   suspend [-f]\r\n disown [-h] [-ar] [job>  test [expr]\r\n echo [-neE] [arg ...]    time [-p] pipeline\r\n enable [-a] [-dnps] [->  times\r\n eval [arg ...]           trap [-lp] [[arg] sig>\r\n exec [-cl] [-a name] [>  true\r\n exit [n]                 type [-afptP] name [n>\r\n export [-fn] [name[=va>  typeset [-aAfFgilnrtu>\r\n false                    ulimit [-SHabcdefiklm>\r\n fc [-e ename] [-lnr] [>  umask [-p] [-S] [mod>\r\n fg [job_spec]            unalias [-a] name [na>\r\n for NAME [in WORDS ...>  unset [-f] [-v] [-n] >\r\n for (( exp1; exp2; exp>  until COMMANDS; do CO>\r\n function name { COMMAN>  variables - Names and>\r\n getopts optstring name>  wait [-n] [id ...]\r\n hash [-lr] [-p pathnam>  while COMMANDS; do CO>\r\n help [-dms] [pattern .>  { COMMANDS ; }\r\n\u001b]0;koto@kotosurf: ~\u0007\u001b[01;32mkoto@kotosurf\u001b[00m:\u001b[01;34m~\u001b[00m$ "
+-
+LOG: "help"
+-
+LOG: "\b\b\b\b\u001b[2Pdf"
+-
+LOG: "\b\bhelp"
+-
+LOG: "a"
+-
+LOG: "s"
+-
+LOG: "d"
+-
+LOG: "f"
+-
+LOG: "\b\u001b[K"
+-
+LOG: "\b\u001b[K"
+-
+LOG: "\b\u001b[K"
+-
+LOG: "\b\u001b[K"
+-
+LOG: "\b\u001b[K"
+-
+LOG: "\b\u001b[K"
+-
+LOG: "\r\n"
+-
+LOG: "\r\nCommand 'he' not found, but can be installed with:\r\n\r\nsudo apt install node-he\r\n"
+-
+LOG: "\r\n"
+-
+LOG: "\u001b]0;koto@kotosurf: ~\u0007\u001b[01;32mkoto@kotosurf\u001b[00m:\u001b[01;34m~\u001b[00m$ "
+-

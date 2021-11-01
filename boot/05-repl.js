@@ -1,5 +1,5 @@
-core.log("[Yehat Backend]Booting Mods.");
+core.log("[Yehat Backend]REPL - OFF");
 
-const repl = require('repl');
+/* const repl = require('repl');
 
-repl.start("Yehat Backend >");
+repl.start("Yehat Backend >"); */

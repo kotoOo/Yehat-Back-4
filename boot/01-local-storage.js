@@ -3,6 +3,7 @@
 core.log("[Yehat Backend]Booting localStorage (stub).");
 global.localStorage = {};
 
+
 const publicRoot = "public-root";
 const log0RootID = 'log0';
 const user0Root = 'users';
@@ -11,6 +12,13 @@ const ID_FAUCETS_0 = "faucets0";
 const ID_CARGO_EMAIL_0 = "emailDelivery0";
 
 module.exports.runAsync = async () => {
+  await ecs.bootSource(require("../sources/00-BackRoot.js"));
+  require("../yehat/basics0.cjs.js");
+
+  await ecs.bootSource(require("../yehat/source0.js"));
+  ecs.unbox(require("../sources/10-MessageBases.json").roster);
+
+
   await require("../yehat/backend0.js");
   await core.ecs.loadLocalInstances();
 

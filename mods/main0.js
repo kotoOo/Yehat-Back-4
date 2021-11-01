@@ -129,6 +129,7 @@ module.exports = () => {
       }
 
       session.connections.user = user.id;
+      session.session0.deviceID = deviceID;
 
       core.bcast({ to: onlineStat0.id, cmd: "eu", id: onlineStat0.id, stat0: onlineStat0.stat0 });
       //socket.join(user.id);

@@ -3,7 +3,7 @@ module.exports = {
     actions: {
       hull: {},
       details: "Roster of handlers, free for all"
-    },
+    },    
     conn: {
       hull: {},
       details: "Non-reactive connections."
@@ -11,15 +11,7 @@ module.exports = {
     connections: {
       hull: {},
       details: `Non-reactive connections Component for backend.`
-    },
-    located: {
-      hull: {
-        rel: null,
-        pos: [ 0, 0, 0 ],
-        size: [ 0, 0 ]
-      }, 
-      details: `Entity's parent container ID and Vector3 position inside of it.` 
-    },
+    },    
     emailDelivery0: {
       hull: {
         emails: [], 
@@ -42,15 +34,7 @@ module.exports = {
     ledger0: {
       hull: {},
       details: "Ledger0 Configuration" 
-    },
-    meta: {
-      hull: {
-        type: "Unknown",
-        name: "No name",
-        tags: [],
-      },
-      details: "General meta-information about an Entity, such its \"type\" (archetype, classification of the Entity Class amongst other Entity Classes), and its \"name\" (Entity Class name, arbitrary)."
-    },
+    },    
     messageBase0: {
       hull: {
         newMessages: {}, /* roster, key: `${from}@${rel}`, value: msg0 ID for new message, if exists. VOLATILE */        
@@ -82,57 +66,7 @@ module.exports = {
         roster: {}
       },
       details: "Message0 Seen By. roster: keys - memberCardID, values: { dt, deviceID, synced: Boolean }"
-    },
-    saveFile: {
-      hull: {
-        save: (item) => async() => {
-          const fs = require("fs/promises");
-          const path = require("path");
-          const a = { id: item.id, type: item.type };
-          for (let key in item.saveFile) {
-            let v = item.saveFile[key];
-      
-            if (key == "forceUpgrade") continue;
-      
-            if (Array.isArray(v)) {
-              a[key] = {};
-              v.forEach(name => {
-                if (item[key]) a[key][name] = item[key][name]
-              });
-            } else if (v === true) {
-              a[key] = item[key];
-            }
-          }
-      
-          let location = null;
-          core.log(`[ECS]Saving [${item.meta ? item.meta.name : item.type}] ${item.id}...`, item.located);
-
-
-          const homeDir = path.join(ecs.homeDir, `../file-db`);
-
-          if (item.located && item.located.rel) {
-            await fs.mkdir(path.join(homeDir, item.located.rel)).catch(e => {
-              if (e.code != 'EEXIST') {
-                core.log("[ECS]saveFile.save mkdir error", e);
-              } else {
-                return fs.chmod(path.join(homeDir, item.located.rel), 0o755);
-              }
-            });      
-      
-            location = path.join(homeDir, item.located.rel, `${item.id}.json`); /* in Cargo */
-          } else {
-            location = path.join(homeDir, `${item.id}.json`);                   /* in Home */
-          }
-      
-          return fs.writeFile(location, JSON.stringify(a)).then(() => {      
-            core.log(`[ECS]Saved File Instance [${item.meta ? item.meta.name : item.type}] #${item.id} => ${location}.`);
-            // core.log(JSON.stringify(a, null, 2));
-            if (!item.type) core.log("Warning! No type.");
-          });
-        }
-      }, 
-      details: "JSON filesystem-based persistence."
-    },
+    },    
     cargo2: {
       hull: {
         rawSize: null,
@@ -322,5 +256,5 @@ module.exports = {
       ], 
       details: "Project" 
     }
-  },
+  }
 };

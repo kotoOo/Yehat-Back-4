@@ -1,6 +1,6 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', { value: true });
+// Object.defineProperty(exports, '__esModule', { value: true });
 
 // const { setFlagsFromString } = require('v8');
 const vue = require('vue');
@@ -23,7 +23,8 @@ const logging = {
   loadingVerbose: 0, 
   bindMethods: 0,
   enchanting: 0,
-  enchantingVerbose: 0
+  enchantingVerbose: 0,
+  unboxing: 0
 };
 
 const Entity1 = (a = []) => {
@@ -82,19 +83,20 @@ const loadEntity = (a = []) => async ({ id, prefix = "yhtback0", /* methods = {}
     const filename = located ? `./file-db/${located}/${id}.json` : `./file-db/${id}.json`;
 
     let stored;
+    let json = null;
     try {
-      stored = JSON.parse(
-        await new Promise((resolve) => {
-          require("fs/promises").readFile(filename)
-            .then(file => resolve(file))
-            .catch(e => {
-              core.log(`[ECS]No file-db entry for ${id}, the instance is fresh.`);
-              resolve(null);
-            });
-        }) || "{}"
-      );
+      json = await new Promise((resolve) => {
+        require("fs/promises").readFile(filename, { encoding: "utf8" })
+          .then(file => resolve(file))
+          .catch(e => {
+            core.log(`[ECS]No file-db entry for ${id}, the instance is fresh.`);
+            resolve(null);
+          });
+      }) || "{}";
+      stored = JSON.parse(json);
     } catch(e) {
-      console.log("Error in file", filename, e.message);
+      core.log("[ECS]Error in file", filename, e.message);
+      core.log("[...](JSON)", json);
       throw(e);
     } 
 
@@ -165,6 +167,7 @@ const loadEntity = (a = []) => async ({ id, prefix = "yhtback0", /* methods = {}
   // console.log("LOADED", b);
   
   const en = vue.reactive(b);
+  // console.log("entity", en);
 
   if (d) core.log(`[ECS]Loading Entity ${en.meta ? en.meta.type : en.id}, ${d} keys upgraded.`);
 
@@ -298,10 +301,11 @@ const ecs = {
     ecs.typeopedia[name] = { details: "No details.", tags: [], ...typeopedia };
     return ecs.types[name];
   },
-  create: (type, { id, ...a } = {}) => {
+  create: async (type, { id, init, ...a } = {}) => {
     if (!ecs.types[type]) throw(`[ECS]Cannot create ${type}`);
-    const entity = ecs.types[type]({ id, ...a });
+    const entity = await ecs.types[type]({ id, ...a });    
     entity.type = type;
+    if (init) await init(entity);
     return entity;
   },
   enforce: (type, { id, ...a } = {}) => {
@@ -761,7 +765,7 @@ const ecs = {
     const { c, ...rest } = item;
     return JSON.stringify(rest, null, 2);
   },
-  bootSource: ({ compo, types }) => {
+  bootSource: async ({ compo, types, roster, meta }) => {
     let cCompo = 0, cType = 0;
 
     for(let name in compo) {
@@ -780,9 +784,22 @@ const ecs = {
       cType++;
     }
 
-    log(`bootSource: ${cCompo} components(s), ${cType} type(s) booted.`);
+    let loaded = 0;
+    let skipped = 0;
+
+    if (roster) {
+      if (logging.unboxing) core.log(`[ECS]Unboxing`, meta);
+      // if (stat) console.table(stat);
+
+      const { loaded: l, skipped: s } = await ecs.unbox(roster);
+      loaded = l;
+      skipped = s;
+    }
+
+    core.log(`[ECS] <[bootSource] ${meta ? `[${meta.type} ${meta.name} v${meta.version}]` : '[UnknownSource]'}`);
+    core.log(`[...] ${cCompo} components(s), ${cType} type(s) booted, ${loaded} entity(ies) loaded, ${skipped} entity(ies) skipped.`);
   },
-  unbox: (roster) => {
+  unbox: async (roster) => {
     const stat = {
       loaded: 0,
       skipped: 0,
@@ -793,7 +810,8 @@ const ecs = {
       let { contains, ...item } = roster[id];
       let { type } = item;
       if (type && ecs.types[type]) {
-        ecs.create(type, { id, ...item });
+        await ecs.create(type, { id, ...item });     
+        core.log(`[ECS] <[create] id: `, id);   
         stat.ids.push(id);
         stat.loaded++;
       } else {
@@ -802,12 +820,14 @@ const ecs = {
       }
 
       if (contains) {
-        let { loaded, skipped, ids } = ecs.unbox(contains);
+        let { loaded, skipped, ids } = await ecs.unbox(contains);
         stat.ids = [ ...stat.ids, ...ids ];
         stat.loaded += loaded;
         stat.skipped += skipped;
       }
     }
+
+    core.log(`[ECS] <[unbox] ids: `, stat.ids);
 
     return stat;
   },
